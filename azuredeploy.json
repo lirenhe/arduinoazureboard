@@ -1,0 +1,43 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "existingFunctionAppName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the function container in which the function has to be created."
+            }
+        },
+        "functionName": {
+            "type": "string",
+            "defaultValue": "transformfunction",
+            "metadata": {
+                "description": "The name of the function."
+            }
+        }
+    },
+    "resources": [{
+        "apiVersion": "2015-08-01",
+        "name": "[concat(parameters('existingFunctionAppName'),'/', parameters('functionName'))]",
+        "type": "Microsoft.Web/sites/functions",
+        "properties": {
+            "config": {
+				"bindings": [
+					{
+						"type": "eventHubTrigger",
+						"name": "myEventHubTrigger",
+						"direction": "in",
+						"path": "EVENTHUB_ENDPOINT_PATH",
+						"connection": "eventHubConnectionString"
+					}
+				],
+				"disabled": false
+			}
+            },
+            "files": {
+                "IntegrationXsltException.csx": "//-----------------------------------------------------------------------\r\n// <copyright file=\"IntegrationXsltException.csx\" company=\"Microsoft\">\r\n//      All rights reserved.\r\n// </copyright>\r\n//-----------------------------------------------------------------------\r\n\r\nusing System;\r\nusing System.Net;\r\n\r\n[System.Diagnostics.CodeAnalysis.SuppressMessage(\"Microsoft.Design\", \"CA1032:ImplementStandardExceptionConstructors\", Justification = \"Not needed.\")]\r\n[System.Diagnostics.CodeAnalysis.SuppressMessage(\"Microsoft.Usage\", \"CA2237:MarkISerializableTypesWithSerializable\", Justification = \"Not needed.\")]\r\npublic class IntegrationXsltException : Exception\r\n{\r\n    public IntegrationXsltException()\r\n    {\r\n    }\r\n\r\n    public IntegrationXsltException(string message) : base(message, null)\r\n    {\r\n        this.StatusCode = HttpStatusCode.InternalServerError;\r\n    }\r\n\r\n    public IntegrationXsltException(HttpStatusCode statusCode, string message)\r\n        : base(message)\r\n    {\r\n        this.StatusCode = statusCode;\r\n    }\r\n\r\n    public IntegrationXsltException(HttpStatusCode statusCode, string message, Exception innerException)\r\n        : base(message, innerException)\r\n    {\r\n        this.StatusCode = statusCode;\r\n    }\r\n\r\n    public HttpStatusCode StatusCode { get; set; }\r\n}",
+                "ContentHash.csx": "//-----------------------------------------------------------------------\r\n// <copyright file=\"ContentHash.csx\" company=\"Microsoft\">\r\n//      All rights reserved.\r\n// </copyright>\r\n//-----------------------------------------------------------------------\r\n\r\nusing Newtonsoft.Json;\r\n\r\npublic class ContentHash\r\n{\r\n    public string Algorithm { get; set; }\r\n\r\n    public string Value { get; set; }\r\n}\r\n"
+            }
+        }
+    }]
+}
