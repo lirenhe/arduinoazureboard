@@ -39,5 +39,5 @@
                 "ContentHash.csx": "//-----------------------------------------------------------------------\r\n// <copyright file=\"ContentHash.csx\" company=\"Microsoft\">\r\n//      All rights reserved.\r\n// </copyright>\r\n//-----------------------------------------------------------------------\r\n\r\nusing Newtonsoft.Json;\r\n\r\npublic class ContentHash\r\n{\r\n    public string Algorithm { get; set; }\r\n\r\n    public string Value { get; set; }\r\n}\r\n"
             }
         }
-    }]
+    ]
 }
