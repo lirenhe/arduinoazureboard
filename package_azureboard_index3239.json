@@ -10,7 +10,7 @@
       },
       "platforms": [
 		{
-          "name": "MXChip - Microsoft Azure IoT Developer Kit AZ3239",
+          "name": "MXChip - Microsoft Azure IoT Developer Kit",
           "architecture": "stm32f4",
           "version": "1.0.1",
           "category": "Contributed",
